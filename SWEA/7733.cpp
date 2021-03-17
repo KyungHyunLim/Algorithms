@@ -11,8 +11,8 @@
 using namespace std;
 
 int N;
-int cheese[101][101]; // NxN Ä¡Áî
-int visited[101][101]; // µ¢¾î¸® °Ë»ö¿ë (BFS)
+int cheese[101][101]; // NxN ì¹˜ì¦ˆ
+int visited[101][101]; // ë©ì–´ë¦¬ ê²€ìƒ‰ìš© (BFS)
 int answer;
 
 void fairy_attack(map<int, vector<pair<int, int>>> &cheese_info, int day) {
@@ -50,7 +50,7 @@ int calc_sub_cheese() {
 					int newX = x + dx[z];
 					int newY = y + dy[z];
 
-					//Ä¡Áî ¿µ¿ª ¹Û, ÀÌ¹Ì ¹æ¹®, ¾ø´Â ºÎºĞ
+					//ì¹˜ì¦ˆ ì˜ì—­ ë°–, ì´ë¯¸ ë°©ë¬¸, ì—†ëŠ” ë¶€ë¶„
 					if (newX < 0 || newY < 0 || newX >= N || newY >= N || visited[newX][newY] || cheese[newX][newY] == 0) continue;
 					
 					visited[newX][newY] = 1;
@@ -94,5 +94,5 @@ int main(int argc, char** argv)
 
 		printf("#%d %d\n", test_case, answer);
 	}
-	return 0;//Á¤»óÁ¾·á½Ã ¹İµå½Ã 0À» ¸®ÅÏÇØ¾ßÇÕ´Ï´Ù.
+	return 0;//ì •ìƒì¢…ë£Œì‹œ ë°˜ë“œì‹œ 0ì„ ë¦¬í„´í•´ì•¼í•©ë‹ˆë‹¤.
 }
