@@ -30,5 +30,5 @@ int main(int argc, char** argv)
 		sum == N * (N + 1) / 2 ? printf("Yes\n") : printf("No\n");
 		
 	}
-	return 0;//Á¤»óÁ¾·á½Ã ¹İµå½Ã 0À» ¸®ÅÏÇØ¾ßÇÕ´Ï´Ù.
+	return 0;//ì •ìƒì¢…ë£Œì‹œ ë°˜ë“œì‹œ 0ì„ ë¦¬í„´í•´ì•¼í•©ë‹ˆë‹¤.
 }
