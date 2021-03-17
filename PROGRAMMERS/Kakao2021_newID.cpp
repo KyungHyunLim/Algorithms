@@ -6,36 +6,36 @@ using namespace std;
 string solution(string new_id) {
     string answer = "";
 
-    //1. ´ë¼Ò¹®ÀÚ Ä¡È¯ & 2. »ç¿ë°¡´ÉÇÑ ¹®ÀÚ Á¦¿Ü ¸ğµÎ Á¦°Å & 3. '.' ¿©·¯°³ ÇÑ°³·Î Ä¡È¯
+    //1. ëŒ€ì†Œë¬¸ì ì¹˜í™˜ & 2. ì‚¬ìš©ê°€ëŠ¥í•œ ë¬¸ì ì œì™¸ ëª¨ë‘ ì œê±° & 3. '.' ì—¬ëŸ¬ê°œ í•œê°œë¡œ ì¹˜í™˜
     int idx = 0;
     for (int i = 0; i < new_id.length(); i++) {
-        //1. ´ë¼Ò¹®ÀÚ Ä¡È¯
+        //1. ëŒ€ì†Œë¬¸ì ì¹˜í™˜
         if (new_id[i] >= 'A' && new_id[i] <= 'Z') {
             new_id[i] = new_id[i] - 'A' + 'a';
         }
 
-        //2. »ç¿ë°¡´ÉÇÑ ¹®ÀÚ Á¦¿Ü ¸ğµÎ Á¦°Å, 
+        //2. ì‚¬ìš©ê°€ëŠ¥í•œ ë¬¸ì ì œì™¸ ëª¨ë‘ ì œê±°, 
         if ((new_id[i] >= '0' && new_id[i] <= '9') || (new_id[i] >= 'a' && new_id[i] <= 'z') || new_id[i] == '.' || new_id[i] == '-' || new_id[i] == '_'){
-            //3. '.' ¿©·¯°³ ÇÑ°³·Î Ä¡È¯
+            //3. '.' ì—¬ëŸ¬ê°œ í•œê°œë¡œ ì¹˜í™˜
             if (answer.length() > 0 && answer[idx - 1] == '.' && new_id[i] == '.') continue;
             answer += new_id[i];
             idx++;
         }
     }
 
-    //4. '.'°¡ Ã³À½, ¶Ç´Â ³¡ÀÌ¸é Á¦°Å
+    //4. '.'ê°€ ì²˜ìŒ, ë˜ëŠ” ëì´ë©´ ì œê±°
     if (answer.length() > 0 && answer[0] == '.') answer.erase(0, 1);
     if (answer.length() > 0 && answer[answer.length()-1] == '.') answer.erase(answer.length() - 1, 1);
     
-    //5. ºó¹®ÀÚ¿­ÀÌ¸é a Ãß°¡
+    //5. ë¹ˆë¬¸ìì—´ì´ë©´ a ì¶”ê°€
     if (answer.length() == 0) answer = "a";
 
-    //6. 16ÀÚ ÀÌ»óÀÌ¸é ´Ù Á¦°Å
+    //6. 16ì ì´ìƒì´ë©´ ë‹¤ ì œê±°
     if (answer.length() > 15) answer.erase(15, answer.length() - 15);
-    //15¹øÂ°°¡ .ÀÏ¼ö ÀÖÀ½.
+    //15ë²ˆì§¸ê°€ .ì¼ìˆ˜ ìˆìŒ.
     if (answer.length() > 0 && answer[answer.length() - 1] == '.') answer.erase(answer.length() - 1, 1);
 
-    //7. ±æÀÌ°¡ 2 ÀÌÇÏ¸é 3ÀÌ µÉ¶§±îÁö ¸¶Áö¸· ±ÛÀÚ ¸¸º¹
+    //7. ê¸¸ì´ê°€ 2 ì´í•˜ë©´ 3ì´ ë ë•Œê¹Œì§€ ë§ˆì§€ë§‰ ê¸€ì ë§Œë³µ
     char last_one = answer[answer.length()-1];
     while (answer.length() < 3) {
         answer += last_one;
