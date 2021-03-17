@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 		else {
 			int count1 = 0;
 			int count2 = 0;
-			//21º¸´Ù ÀÛ°Å³ª °°Àº ¼ö¸¦ ¸¸µé ¼ö ÀÖ´Â Ä«µå °³¼ö
+			//21ë³´ë‹¤ ì‘ê±°ë‚˜ ê°™ì€ ìˆ˜ë¥¼ ë§Œë“¤ ìˆ˜ ìˆëŠ” ì¹´ë“œ ê°œìˆ˜
 			for (int i = 2; i <= 11; i++) {
 				if(sum + i > 21) count2 += list[i];
 				else count1 += list[i];
@@ -48,5 +48,5 @@ int main(int argc, char** argv)
 			count2 >= count1 ? cout << " STOP" << endl : cout << " GAZUA" << endl;;
 		}
 	}
-	return 0;//Á¤»óÁ¾·á½Ã ¹İµå½Ã 0À» ¸®ÅÏÇØ¾ßÇÕ´Ï´Ù.
+	return 0;//ì •ìƒì¢…ë£Œì‹œ ë°˜ë“œì‹œ 0ì„ ë¦¬í„´í•´ì•¼í•©ë‹ˆë‹¤.
 }
