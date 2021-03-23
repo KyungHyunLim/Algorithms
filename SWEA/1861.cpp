@@ -5,11 +5,8 @@
 1. 한방에서 갈수 있는 곳은 1개 => 같은 방을 두번 방문할 필요는 없다.
 2. 갈수있는 방이 +1이므로 4번의 이동가능 수 = 3번의 이동가능수 + 1 이다.
 
-전형적인 DP문제 이지만, 다르게 풀어보기 도전
-BFS() 사용 => 작은수 부터 탐색 시작하면 풀이 가능
-범위가 1,000,000이라 작은수 부터 접근 할수 있는 방법 필요 (배열 선언은 크기 한계로 불가)
-Priority_queue 사용 예정
-
+BFS로 풀 수 있을까? 시간 초과
+메모라이제이션 필요
 */
 #include<iostream>
 #include<vector>
@@ -21,7 +18,7 @@ using namespace std;
 
 int N;
 int map[1000][1000];
-bool visited[1000][1000];
+int visited[1000][1000];
 int cnt;
 int ans;
 
@@ -44,7 +41,7 @@ struct info {
 void solve(int i, int j) {
 	queue<info> q;
 	q.push(info(i,j,1, map[i][j]));
-	visited[i][j] = true;
+	visited[i][j] = 1;
 
 	while (!q.empty()) {
 		int x = q.front().x;
@@ -66,20 +63,17 @@ void solve(int i, int j) {
 		for (int k = 0; k < 4; k++) {
 			int nx = x + dx[k];
 			int ny = y + dy[k];
-			if (nx < 0 || nx >= N || ny < 0 || ny >= N || visited[nx][ny]) continue;
+			if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
 			if (map[x][y] + 1 == map[nx][ny]) {
-				visited[nx][ny] = true;
-				q.push(info(nx, ny, c + 1, start));
+				if(visited[nx][ny] != 0){
+					visited[nx][ny] = visited[x][y] + 1;
+				}else{
+					q.push(info(nx, ny, c + 1, start));
+				}
 			}
 		}
 	}
 }
-
-struct cmp {
-	bool operator()(info t, info u) {
-		return t.start > u.start;
-	}
-};
 
 int main(int argc, char** argv)
 {
@@ -94,23 +88,20 @@ int main(int argc, char** argv)
 	for (test_case = 1; test_case <= T; ++test_case)
 	{
 		memset(visited, false, sizeof(visited));
-		char sequence[1000001][2];
 
-		cin >> N;
-		
+		cin >> N;		
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				cin >> map[i][j];
-				sequence[map[i][j]][0] = i + '0';
-				sequence[map[i][j]][1] = j + '0';
 			}
 		}
 	
 		ans = INF;
 		cnt = 0;
-		for (int i = 1; i <= N * N; i++) {
-			if (!visited[sequence[i][0]-'0'][sequence[i][1] - '0'])
-				solve(sequence[i][0] - '0', sequence[i][1] - '0');
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if(!visited[i][j]) solve(i, j);
+			}
 		}
 		
 
