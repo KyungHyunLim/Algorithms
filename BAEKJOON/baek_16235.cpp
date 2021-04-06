@@ -122,3 +122,115 @@ int main() {
 
 	return 0;
 }
+/*
+dequeue 
+
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<cstring>
+#include<algorithm>
+#include<deque>
+
+using namespace std;
+
+#define MAX 11
+
+//tree: 좌표별 트리 목록
+	//나이순 입력을 위해 우선순위 큐 사용
+//map : 좌표별 양분 량
+//basic_map : 겨울에 로봇의 추가를 위해 초기 값 저장
+//N: 맵크기, M: 나무수, K: 반복 횟수(년)
+deque<pair<int, pair<int, int>>> tree;
+int map[MAX][MAX];
+int basic_map[MAX][MAX];
+int N, M, K;
+
+int dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+int dy[8] = {1, 1, 0, -1, -1, -1, 0, 1};
+
+int main() {
+
+	ios::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	cin >> N >> M >> K;
+
+	// 맵에 양분 정보 입력 및 로봇의 추가 양분
+	memset(map, 5, sizeof(map));
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cin >> basic_map[i][j];
+		}
+	}
+
+	// 초기 나무 정보 입력
+	for (int i = 0; i < M; i++) {
+		int x, y, age;
+		cin >> x >> y >> age;
+		tree.push_back(make_pair(age,make_pair(x-1,y-1)));
+	}
+
+	// K년 동안 반복
+	for (int i = 0; i < K; i++) {
+		vector<pair<int, pair<int, int>>> dead_tree;
+		deque<pair<int, pair<int, int>>> backup_tree;
+		// 봄		
+		while (!tree.empty()) { // 나무 목록이 존재하면
+			int x = tree.begin()->second.first;
+			int y = tree.begin()->second.second;
+			int age = tree.begin()->first; // 나무 나이
+			tree.pop_front();
+			if (age <= map[x][y]) { // 양분을 섭취할 수 있으면
+				map[x][y] -= age; // 양분을 먹은만큼 감소
+				backup_tree.push_back(make_pair(age + 1,make_pair(x, y))); // 나이먹은 나무 새로운 목록에 추가
+			}
+			else { // 양분을 섭취할 수 없으면
+				// 죽은 나무 리스트에 저장
+				dead_tree.push_back(make_pair(age, make_pair(x, y)));
+			}
+		}
+		tree.swap(backup_tree);
+		//여름
+		for (int j = 0; j < dead_tree.size(); j++) { // 죽은 나무 목록 전체에 대해
+			// 각 좌표에 나이/2 만큼의 양분 추가
+			map[dead_tree[j].second.first][dead_tree[j].second.second] 
+				+= (dead_tree[j].first/2);
+		}
+		//가을
+		deque<pair<int, pair<int, int>>> tmp;
+		tmp = tree;
+		while (!tmp.empty()) {
+			int x = tmp.begin()->second.first;
+			int y = tmp.begin()->second.second;
+			int z = tmp.begin()->first;
+
+			// 8 방위 나이 1인 나무 추가
+			if (z != 0 && z % 5 == 0) {
+				for (int k = 0; k < 8; k++) {
+					int nx = x + dx[k];
+					int ny = y + dy[k];
+					// 맵을 벗어나지 않으면
+					if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
+					// 나이 1인 나무 추가
+					tree.push_front(make_pair(1, make_pair(nx, ny)));
+				}
+			}
+			tmp.pop_front();
+		}
+		// 겨울
+		// 저장해두었던 초기 양분 값 더하기
+		for (int j = 0; j < N; j++) {
+			for (int k = 0; k < N; k++) {
+				map[j][k] += basic_map[j][k];
+			}
+		}
+	}
+	
+	// 나무 수 세기
+	int answer = tree.size();
+	cout << answer << endl;
+
+	return 0;
+}
+*/
