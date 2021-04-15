@@ -4,185 +4,182 @@
 - 남아있는 얼음 A[r][c]의 합
 - 남아있는 얼음 중 가장 큰 덩어리가 차지하는 칸의 개수
 
-1. 맵 재구성 (얼음 돌리기)
-2. 얼음 녹는 것 반영
-
+1. 격자 나누기 - 분할정복
+2. 회전 - 하드 코딩
+3. 얼음 크기 변경 - candidate 뽑은후 
+4. 1-3 Q회 반복
+5. 덩어리 크기 비교 - bfs()
 */
-#include <iostream>
-#include <vector>
-#include <queue>
- 
-#define MAX 70
-#define endl "\n"
+#include<iostream>
+#include<vector>
+#include<cmath>
+#include<queue>
+
 using namespace std;
- 
-int N, Q, Sum_Answer, Size_Answer;
-int MAP[MAX][MAX];
-bool Visit[MAX][MAX];
-vector<int> Cmd;
- 
-int dx[] = { 0, 0, 1, -1 };
-int dy[] = { 1, -1, 0, 0 };
- 
-int Max(int A, int B) { return A > B ? A : B; }
- 
-void Input()
-{
-    cin >> N >> Q;
-    N = (1 << N);
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            cin >> MAP[i][j];
-            Sum_Answer += MAP[i][j];
-        }
-    }
-    for (int i = 0; i < Q; i++)
-    {
-        int a; cin >> a;
-        Cmd.push_back(a);
-    }
+/*
+3 1
+1 2 3 4 5 6 7 8
+9 10 11 12 13 14 15 16
+17 18 19 20 21 22 23 24
+25 26 27 28 29 30 31 32
+33 34 35 36 37 38 39 40
+41 42 43 44 45 46 47 48
+49 50 51 52 53 54 55 56
+57 58 59 60 61 62 63 64
+3
+*/
+
+// N: 맵크기
+// Q: 파이어 스톰 횟수
+int N, Q;
+// 맵
+int map[64][64];
+bool visited[64][64];
+// 파이어 스톰 단계
+vector<int> L;
+
+// 방향
+// 덩어리 탐색, 얼음 크기 조정용
+int dx[4] = {1,0,-1,0};
+int dy[4] = {0,1,0,-1};
+
+// 얼음 회전
+void Rotation(int l, int x, int y) {
+	int cnt = l / 2;
+	for (int z = 0; z < cnt; z++) {
+		int base_x = x + z;
+		int base_y = y + z;
+		int end_x = x + l - z - 1;
+		int end_y = y + l - z - 1;
+		int len = end_x - base_x;
+
+		int temp[64];
+		// 1. 임시배열에 복사
+		for (int i = 0; i < len; i++) temp[i] = map[base_x][base_y + i];
+		// 2. 회전 4 -> 1
+		for (int i = 0; i < len; i++)  map[base_x][base_y + i] = map[end_x - i][base_y];
+		for (int i = 0; i < len; i++)  map[end_x - i][base_y] = map[end_x][end_y - i];
+		for (int i = 0; i < len; i++)  map[end_x][end_y - i] = map[base_x + i][end_y];
+		for (int i = 0; i < len; i++)  map[base_x + i][end_y] = temp[i];
+	}
 }
- 
-void Turning(int a, int b, int Len)
-{
-    int Square = Len / 2;
-    for (int Number = 0; Number < Square; Number++)
-    {
-        int Start_x = a + Number;
-        int Start_y = b + Number;
-        int End_x = a + Len - Number - 1;
-        int End_y = b + Len - Number - 1;
- 
-        int x_Idx = End_x;
-        int y_Idx = Start_y;
-        int Idx = 0;
-        vector<int> Temp;
-        for (int i = Start_x; i < End_x; i++) Temp.push_back(MAP[i][Start_y]);
-        for (int i = Start_x; i < End_x; i++) MAP[i][Start_y] = MAP[End_x][y_Idx++];
-        for (int i = Start_y; i < End_y; i++) MAP[End_x][i] = MAP[x_Idx--][End_y];
-        for (int i = End_x; i > Start_x; i--) MAP[i][End_y] = MAP[Start_x][y_Idx--];
-        for (int i = End_y; i > Start_y; i--) MAP[Start_x][i] = Temp[Idx++];
-    }
+
+// 격자 나누기 (현재 길이 2^N, 타겟 길이 2^l), x, y
+void Divide(int sub_N, int l, int x,int y) {
+	if (sub_N == l) {
+		// 2. 회전
+		Rotation(l, x, y);
+		return;
+	}
+	else {
+		int next = sub_N / 2;
+		Divide(sub_N / 2, l, x, y);
+		Divide(sub_N / 2, l, x + next, y);
+		Divide(sub_N / 2, l, x, y + next);
+		Divide(sub_N / 2, l, x + next, y + next);
+	}
 }
- 
-void Remake_MAP(int Len)
-{
-    for (int i = 0; i < N; i += Len)
-    {
-        for (int j = 0; j < N; j += Len)
-        {
-            Turning(i, j, Len);
-        }
-    }
+
+// 얼음 녹이기
+void Melting(int Real_N) {
+	vector<pair<int, int>> candidate;
+	for (int j = 0; j < Real_N; j++) {
+		for (int k = 0; k < Real_N; k++) {
+			if (map[j][k] == 0) continue;
+			else {
+				// 주위 4방향 검사
+				int cnt = 0;
+				for (int z = 0; z < 4; z++) {
+					int nx = j + dx[z];
+					int ny = k + dy[z];
+					if (nx < 0 || nx >= Real_N || ny < 0 || ny >= Real_N) continue;
+					if (map[nx][ny] != 0) cnt++;
+				}
+				// 주변에 얼음이 3개보다 적으면 얼음량 감소
+				if (cnt < 3) candidate.push_back(make_pair(j, k));
+			}
+		}
+	}
+
+	for (int i = 0; i < candidate.size(); i++) {
+		map[candidate[i].first][candidate[i].second]--;
+	}
+
 }
- 
-void Melting_Ice()
-{
-    vector<pair<int, int>> V;
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            if (MAP[i][j] == 0) continue;
- 
-            int Cnt = 0;
-            for (int k = 0; k < 4; k++)
-            {
-                int nx = i + dx[k];
-                int ny = j + dy[k];
-                if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
-                if (MAP[nx][ny] == 0) continue;
-                Cnt++;
-            }
- 
-            if (Cnt < 3) V.push_back(make_pair(i, j));
-        }
-    }
- 
-    for (int i = 0; i < V.size(); i++)
-    {
-        int x = V[i].first;
-        int y = V[i].second;
-        MAP[x][y]--;
-        Sum_Answer--;
-    }
+
+// 덩어리 크기 탐색
+int search(int Real_N, int x, int y) {
+	queue<pair<int, int>> q;
+	q.push(make_pair(x, y));
+	visited[x][y] = true;
+	int cnt = 1;
+
+	while (!q.empty()) {
+		int cx = q.front().first;
+		int cy = q.front().second;
+		q.pop();
+		
+		for (int i = 0; i < 4; i++) {
+			int nx = cx + dx[i];
+			int ny = cy + dy[i];
+			if (nx < 0 || nx >= Real_N || ny < 0 || ny >= Real_N) continue;
+			if (map[nx][ny] != 0 && !visited[nx][ny]) {
+				visited[nx][ny] = true;
+				q.push(make_pair(nx, ny));
+				cnt++;
+			}
+		}
+	}
+	return cnt;
 }
- 
-int BFS(int a, int b)
-{
-    queue<pair<int, int>> Q;
-    Q.push(make_pair(a, b));
-    Visit[a][b] = true;
-    int Cnt = 1;
- 
-    while (Q.empty() == 0)
-    {
-        int x = Q.front().first;
-        int y = Q.front().second;
-        Q.pop();
- 
-        for (int i = 0; i < 4; i++)
-        {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (nx >= 0 && ny >= 0 && nx < N && ny < N)
-            {
-                if (MAP[nx][ny] != 0 && Visit[nx][ny] == false)
-                {
-                    Visit[nx][ny] = true;
-                    Q.push(make_pair(nx, ny));
-                    Cnt++;
-                }
-            }
-        }
-    }
-    return Cnt;
-}
- 
-void Calculate_Ice_Size()
-{
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            if (MAP[i][j] == 0) continue;
-            if (Visit[i][j] == true) continue;
-            
-            int Result = BFS(i, j);
-            Size_Answer = Max(Size_Answer, Result);
-        }
-    }
-}
- 
-void Solution()
-{
-    for (int i = 0; i < Q; i++)
-    {
-        int L = (1 << Cmd[i]);
-        Remake_MAP(L);
-        Melting_Ice();
-    }
-    Calculate_Ice_Size();
- 
-    cout << Sum_Answer << endl << Size_Answer << endl;
-}
- 
-void Solve()
-{
-    Input();
-    Solution();
-}
- 
-int main(void)
-{
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
- 
-    //freopen("Input.txt", "r", stdin);
-    Solve();
- 
-    return 0;
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	cin >> N >> Q;
+	int Real_N = (int)pow(2, N);
+
+	// 맵정보 입력
+	for (int i = 0; i < Real_N; i++) {
+		for (int j = 0; j < Real_N; j++) {
+			cin >> map[i][j];
+		}
+	}
+
+	// 파이어 스톰 단계 정보 입력
+	for (int i = 0; i < Q; i++) {
+		int temp;
+		cin >> temp;
+		L.push_back(temp);
+	}
+
+	// Q번 반복
+	for(int i=0; i<Q; i++){
+		// 1. 격자 나누기
+		// 2. 회전
+		Divide(Real_N, (int)pow(2, L[i]), 0, 0);
+		// 3. 얼음 크기 변경 
+
+		Melting(Real_N);
+	}
+	int biggest = 0;
+	int count = 0;
+	// 덩어리 크기 및 남은 얼음 개수 계산
+	for (int i = 0; i < Real_N; i++) {
+		for (int j = 0; j < Real_N; j++) {
+			// 총 합계
+			count += map[i][j];
+			// 얼음이 없거나 다른 덩어리에 포함된거 pass
+			if (map[i][j] == 0) continue;
+			if(!visited[i][j]){
+				int temp = search(Real_N, i, j);
+				biggest = biggest > temp ? biggest : temp;
+			}
+		}
+	}
+
+	cout << count << endl << biggest << endl;
+
+	return 0;
 }
