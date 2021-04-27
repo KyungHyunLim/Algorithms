@@ -16,12 +16,8 @@ using namespace std;
 // 구명 보트를 최대한 적게 사용하여 모든 사람을 구출
 // 사람을 구출할 수 없는 경우는 없음, 무게 제한 > 사람 몸무게 최대값
 
-bool rescued[50000];
-
 int solution(vector<int> people, int limit) {
     sort(people.begin(), people.end());
-    int cnt = 0;
-    int size = people.size();
     int cur = people.size() - 1;
     int used = 0;
     int idx = 0;
@@ -29,21 +25,15 @@ int solution(vector<int> people, int limit) {
         // 현재 사람과 아직 구출되지 않은 가장 작은 사람의 합이
         // 무게 제한을 넘지 않으면
         if(people[cur] + people[idx] <= limit){
-            rescued[cur] = true;
-            rescued[idx] = true;
             idx++;
-            // 두명 동시에 구출
-            cnt += 2;
             cur--;
         }
         // 무게 제한을 넘으면 현재 사람만 구출
         else{
-            rescued[cur] = true;
             cur--;
         }
         // 사용 횟수 증가
         used++;
-        
     }
     
     return used;
