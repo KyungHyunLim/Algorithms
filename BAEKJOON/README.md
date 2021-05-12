@@ -1,7 +1,7 @@
 https://www.acmicpc.net/
 
 1,000 ~ 10,000
-https://www.acmicpc.net/problem/1074 Z
+https://www.acmicpc.net/problem/1074 Z <br>
 https://www.acmicpc.net/problem/1080 행렬
 https://www.acmicpc.net/problem/1092 배
 https://www.acmicpc.net/problem/1182 부분수열의 합
