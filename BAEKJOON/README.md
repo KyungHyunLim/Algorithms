@@ -54,6 +54,7 @@ https://www.acmicpc.net/problem/12015 가장 큰 증가하는 부분 수열 2 <b
 https://www.acmicpc.net/problem/12886 돌 그룹 <br>
 https://www.acmicpc.net/problem/13458 시험 감독 <br>
 https://www.acmicpc.net/problem/13460 구슬 탈출 2 <br>
+https://www.acmicpc.net/problem/14225 부분수열의 합 <br>
 https://www.acmicpc.net/problem/14395 4연산 <br>
 https://www.acmicpc.net/problem/14442 벽 부수고 이동하기 2 <br>
 https://www.acmicpc.net/problem/14501 퇴사 <br>
@@ -89,7 +90,7 @@ https://www.acmicpc.net/problem/19236 청소년 상어 <br>
 https://www.acmicpc.net/problem/19237 어른상어 <br>
 https://www.acmicpc.net/problem/19238 스타트 택시 <br>
 
-20,000~
+20,000~ <br>
 https://www.acmicpc.net/problem/20055 컨베이어 벨트 위의 로봇 <br>
 https://www.acmicpc.net/problem/20056 마법사 상어와 파이어볼 <br>
 https://www.acmicpc.net/problem/20058 마법사 상어와 파이어스톰 <br>
@@ -98,5 +99,4 @@ https://www.acmicpc.net/problem/21608 상어 초등학교 <br>
 https://www.acmicpc.net/problem/21609 상어 중학교 <br>
 https://www.acmicpc.net/problem/21610 마법사 상어와 비바라기 <br>
 https://www.acmicpc.net/problem/21611 마법사 상어와 블리자드 <br>
-114225 ?
 
