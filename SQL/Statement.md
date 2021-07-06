@@ -1,4 +1,6 @@
-# 중복 및, NULL이 아닌 개수 세기.
+# SQL 연습
+
+#### 1.
 ```sql
 SELECT COUNT(DISTINCT NAME) FROM ANIMAL_INS WHERE NAME is not NULL
 ```
