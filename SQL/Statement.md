@@ -100,6 +100,7 @@ FROM TIME
 GROUP By HOUR
 ORDER BY HOUR
 ```
+### JOIN
 #### 15.
 
 
