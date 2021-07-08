@@ -195,9 +195,26 @@ WHERE INS.SEX_UPON_INTAKE != OUTS.SEX_UPON_OUTCOME
 ORDER BY INS.ANIMAL_ID
 ```
 ### String, Date
-#### 21. 
+#### 21. 이름 찾기
 ```sql
-
+SELECT ANIMAL_ID, NAME, SEX_UPON_INTAKE
+FROM ANIMAL_INS
+WHERE NAME IN ('Lucy', 'Ella', 'Pickle', 'Rogan', 'Sabrina', 'Mitty')
 ```
-
+#### 22. el이 들어가는 동물 
+```sql
+-- UPPER -> 소문자를 대문자로 변경해줌
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_INS
+WHERE ANIMAL_TYPE = 'Dog' AND UPPER(NAME) LIKE '%EL%'
+ORDER BY NAME
+```
+#### 23. el이 들어가는 동물 
+```sql
+-- UPPER -> 소문자를 대문자로 변경해줌
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_INS
+WHERE ANIMAL_TYPE = 'Dog' AND UPPER(NAME) LIKE '%EL%'
+ORDER BY NAME
+```
 
