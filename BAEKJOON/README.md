@@ -1,6 +1,7 @@
 https://www.acmicpc.net/
 
 1,000 ~ 10,000 <br>
+https://www.acmicpc.net/problem/1013 Contact <br>
 https://www.acmicpc.net/problem/1074 Z <br>
 https://www.acmicpc.net/problem/1080 행렬 <br>
 https://www.acmicpc.net/problem/1092 배 <br>
