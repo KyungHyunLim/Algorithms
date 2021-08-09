@@ -36,6 +36,7 @@ https://www.acmicpc.net/problem/2875 음계 <br>
 https://www.acmicpc.net/problem/3055 탈출 <br>
 https://www.acmicpc.net/problem/3190 뱀 <br>
 https://www.acmicpc.net/problem/4195 친구 네트워크 <br>
+https://www.acmicpc.net/problem/5525 IOIOI <br>
 https://www.acmicpc.net/problem/5397 키로거 <br>
 https://www.acmicpc.net/problem/5719 거의 최단 경로 <br>
 https://www.acmicpc.net/problem/6087 레이저 통신 <br>
