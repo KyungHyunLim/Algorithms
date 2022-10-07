@@ -10,6 +10,7 @@ Description:
 
     상어칸 제외 구슬이 하나씩 존재 (1, 2, 3)번 구슬 있음
 
+    0. 소용돌이 모양 1차원 배열로 변경하기!!
     1. 블리자드 마법 시전 (d, s), 4가지 방향(상하좌우=1234)
          d 방향, 거리 s 이하인 모든 칸에 얼음 파편을 던져 구슬 파괴 (빈칸됨)
     2. 빈칸 채우기
@@ -103,9 +104,9 @@ def generate_beeds():
         elif cur == v:
             cnt += 1
         else:
-            if len(new_board) == N**2 - 1:
+            if len(new_board) == N**2 - 2:
                 new_board.append(cnt)
-            elif len(new_board) == N**2:
+            elif len(new_board) == N**2 - 1:
                 break
             else:
                 new_board.append(cnt)
@@ -165,9 +166,9 @@ def solution():
         # 5. 구슬 생성
         generate_beeds()
 
-        print(f'구슬 생성 후')
-        print(board)
-        print('-'*100)
+        # print(f'구슬 생성 후')
+        # print(board)
+        # print('-'*100)
 
 if __name__ == "__main__":
     solution()
